@@ -6,7 +6,7 @@ const courseSchema = mongoose.Schema({
     },
     courseName: { type: String, required: 'Please Enter course Name' },
     courseDepartment: { type: String, enum: ['Information Systems', 'Internet Technology', 'Computer Science', 'BIO'], required: 'Please Enter Course Department' },
-    creaditHours: { type: Number },
+    creaditHours: { type: Number, required: 'Please Enter course hours' },
     grades: [
         {
             type: { type: String },

@@ -20,9 +20,9 @@ router.post('/add/user/course/:id', adminController.addUserCourse);
 
 router.post('/add/course', adminController.addCourse);
 
-router.post('/add/course/grade', adminController.addCourseGrade);
+router.post('/add/course/grade/:courseCode', adminController.addCourseGrade);
 
-router.post('/add/grade', adminController.addGrade); //mo4trk m3 teacher
+router.post('/add/student/grade/:courseCode', adminController.addGrade); //mo4trk m3 teacher
 
 
 
@@ -44,12 +44,13 @@ router.get('/courses', adminController.getAllCourses);
 router.get('/courses/:courseDepartment', adminController.getDepartmentCourses);
 
 
-router.get('/course', adminController.getCourse);
+router.get('/course/:courseCode', adminController.getCourseData);//-------------------
 
-router.get('/course/users', adminController.getCourseUsers); //mo4trk m3 teacher w student
+router.get('/course/students/:courseCode', adminController.getCourseStudents); //mo4trk m3 teacher w student
 
-router.get('/course/students/grades', adminController.getStudentsGrades); //mo4trk m3 teacher w student
+router.get('/course/students/grades/:courseCode/:gradeType', adminController.getStudentsGrades); //mo4trk m3 teacher w student
 
+router.get('/course/grades/:courseCode/:gradeType', adminController.getCourseGradeType);
 
 // ----------------PUT Requests----------------
 
@@ -68,7 +69,7 @@ router.delete('/delete/user/course/:id/:courseCode', adminController.deleteUserC
 
 router.delete('/delete/course/:courseCode', adminController.deleteCourse);
 
-router.delete('/delete/course/grade', adminController.deleteCourseGrade);
+router.delete('/delete/course/grade/:courseCode/:type', adminController.deleteCourseGrade);
 
 
 // ------------------------------------------------------------------------------------------------

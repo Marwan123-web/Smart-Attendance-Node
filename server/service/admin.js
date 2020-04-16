@@ -42,7 +42,7 @@ class adminService {
         );
     }
 
-    static deleteUserCourse(UserId,courseCode) {
+    static deleteUserCourse(UserId, courseCode) {
         return User.findOne({ _id: UserId }).updateOne(
             { courses: courseCode }, // your query, usually match by _id
             { $pull: { courses: { $in: [courseCode] } } }, // item(s) to match from array you want to pull/remove
@@ -72,27 +72,49 @@ class adminService {
 
     static addCourseGrades(code, gradetype, coursegrade) {
         var grade = { type: gradetype, grade: coursegrade };
-        Course.findOne({ courseCode: code }).updateOne(
+        return Course.findOne({ courseCode: code }).updateOne(
             { courseCode: code }, // your query, usually match by _id
             { $push: { grades: grade } }, // item(s) to match from array you want to pull/remove
             { multi: true } // set this to true if you want to remove multiple elements.
         )
     }
+
+    static getCourseGradeType(courseCode, gardeType) {
+        return Course.findOne({ courseCode: courseCode }, { "grades.type": 1, "grades.grade": 1, grades: { $elemMatch: { type: gardeType } }, _id: 0 })
+
+
+        //  return Course.aggregate([
+        //     { $match: { courseCode } },
+        //     {
+        //         $project: {
+        //             grades: {
+        //                 $filter: {
+        //                     input: '$grades',
+        //                     as: 'grades',
+        //                     cond: { $eq: ['$$grades.type', gardeType] }
+        //                 }
+        //             },
+        //             _id: 0
+        //         }
+        //     }
+        // ])
+        // return Course.findOne({ courseCode: courseCode }, { "grades.type": 1, "grades.grade": 1, "grades.type": [gardeType], _id: 0 })
+    }
     static deleteCourseGrade(code, type) {
-        Course.findOne({ courseCode: code }).updateOne(
+        return Course.findOne({ courseCode: code }).updateOne(
             { courseCode: code }, // your query, usually match by _id
             { $pull: { grades: { type: type } } }, // item(s) to match from array you want to pull/remove
             { multi: true } // set this to true if you want to remove multiple elements.
         )
     }
 
-    static getCourseUsers(courseCode, role) {
-        return User.find({ role, courses: { $in: [courseCode] } }, { _id: 1, name: 1, });
+    static getCourseStudents(courseCode) {
+        return User.find({ courses: { $in: [courseCode] } }, { _id: 1, name: 1, email: 1 });
 
     }
 
-    static getCourseGrades(courseCode) {
-        return Grade.find({ courseId: courseCode });
+    static getCourseGrades(courseCode, gradeType) {
+        return Grade.find({ courseId: courseCode, gradeType: gradeType });
     }
 
 
